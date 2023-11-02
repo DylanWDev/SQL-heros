@@ -32,7 +32,16 @@ def update_existing_character():
     else:
         print(f"Character '{name}' not found in the database.")
 
-def delete_character():
+def delete_character(name):
+    check_query = "SELECT id FROM heroes WHERE name = %s;"
+    result = execute_query(check_query, (name,))
+
+    if result:
+        delete_query = "DELETE FROM heroes WHERE name = %s;"
+        execute_modify(delete_query, (name,))
+        print(f"Character '{name}' has been deleted from the database.")
+    else:
+        print(f"Character '{name}' not found in the database.")
     
 
 user_continue = True
@@ -48,3 +57,6 @@ while user_continue:
         create_new_character(name, about_me, biography)
     elif select_functionality == "update":
         update_existing_character()
+    elif select_functionality == "delete":
+        name = input("Enter the character's name you want to delete: ")
+        delete_character(name)
