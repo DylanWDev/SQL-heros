@@ -1,6 +1,5 @@
 from database.db_connection import execute_query, execute_modify
 
-
 def select_all_heroes():
     query = """
         SELECT * FROM heroes
@@ -14,20 +13,6 @@ def select_all_heroes():
 select_all_heroes()
 
 
-# def add_luffy():
-#     prompt = input("Do you want to add Luffy? Y or N:")
-#     if prompt == 'Y':
-#         query = """
-#             INSERT INTO heroes (name, about_me, biography)
-#             VALUES ('Luffy', 'Captain of the Straw Hat Pirates', 'rubber man')
-#             """
-#         execute_modify(query)
-
-# add_luffy()
-    
-
-
-
 
 def create_new_character(name, about_me, biography):
     check_query = "SELECT id FROM heroes WHERE name = %s;"
@@ -36,7 +21,23 @@ def create_new_character(name, about_me, biography):
         insert_query = "INSERT INTO heroes (name, about_me, biography) VALUES (%s, %s, %s);"
         execute_modify(insert_query, (name, about_me, biography))
 
+name = input("Enter the character's name: ")
+about_me = input("Enter info about the character: ")
+biography = input("Enter the character's biography: ")
 
-create_new_character("Sanji", "Chef of the Straw Hat Pirates", "His dream is to find the All Blue")
-create_new_character("God Usopp", "Sniper of the Straw Hat Pirates/Liar", "His dream is to become a brave warrior of the sea!")
+create_new_character(name, about_me, biography)
 
+
+def update_existing_character():
+    name = input("Enter the character's name you want to update: ")
+    check_query = "SELECT id FROM heroes WHERE name = %s;"
+    result = execute_query(check_query, (name,))
+    
+    if result:
+        about_me = input("Enter the updated about me information: ")
+        biography = input("Enter the updated biography: ")
+        update_query = "UPDATE heroes SET about_me = %s, biography = %s WHERE name = %s;"
+        execute_modify(update_query, (about_me, biography, name))
+    else:
+        print(f"Character '{name}' not found in the database.")
+update_existing_character()
