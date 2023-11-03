@@ -1,9 +1,8 @@
 from database.db_connection import execute_query, execute_modify
 
-def select_all_heroes():
-    query = """
-        SELECT * FROM heroes
-    """
+def read_heroes_table():
+    query = "SELECT * FROM heroes"
+
     returned_items = execute_query(query)
     for item in returned_items:
         print(item)
@@ -25,10 +24,11 @@ def update_existing_character():
     result = execute_query(check_query, (name,))
     
     if result:
+        new_name = input("Enter the character's new name: ")
         about_me = input("Enter the updated about me information: ")
         biography = input("Enter the updated biography: ")
-        update_query = "UPDATE heroes SET about_me = %s, biography = %s WHERE name = %s;"
-        execute_modify(update_query, (about_me, biography, name))
+        update_query = "UPDATE heroes SET about_me = %s, biography = %s, name = %s WHERE name = %s;"
+        execute_modify(update_query, (about_me, biography, new_name, name))
     else:
         print(f"Character '{name}' not found in the database.")
 
@@ -49,7 +49,7 @@ while user_continue:
     func = ["create", "read", "update", "delete"]
     select_functionality = input("CREATE, READ, UPDATE, DELETE: ").lower()
     if select_functionality == "read":
-        select_all_heroes()
+        read_heroes_table()
     elif select_functionality == "create":
         name = input("Enter the character's name: ")
         about_me = input("Enter info about the character: ")
