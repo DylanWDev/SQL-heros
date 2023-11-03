@@ -39,9 +39,3 @@ def execute_modify(query, params=None):
         print(f"The error '{e}' occurred or the hero name is already taken")
     finally:
         connection.close()
-        
-        SELECT * from patients
-    
-        INSERT INTO patients (name, bio)
-        VALUES (%s, %s)
-        
